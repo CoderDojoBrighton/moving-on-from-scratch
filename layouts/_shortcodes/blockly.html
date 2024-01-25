@@ -1,0 +1,20 @@
+<div class="blocklyContainer">
+    <div class="spritesRow"></div>
+    <div class="blocklyDiv"
+         {{- with (.Get "readonly") -}} data-readonly='{{ . }}' {{- end -}}
+         {{- with .Page.CurrentSection.Resources.Get (.Get "sample") -}}
+           {{- with . | transform.Unmarshal -}}
+             {{- range .sprites -}}
+               data-image={{ .image }}
+               {{ with $.Page.CurrentSection.Resources.Get (.image) }} {{ .Publish }} {{ end }}
+             {{- end -}}
+           {{- end -}}
+         data-sample='{{ .RelPermalink }}'
+         {{- end -}}
+         {{- with (.Get "preview-style") -}} data-preview-style='{{ . }}' {{- end -}}
+         style="height: 400px; width: 60%; float: left">
+    </div>
+    <pre style="height: 400px; width: 40%; float: right; margin: 0; padding: 0; border: 0;"><code class="codeDiv language-python" style="margin: 0; padding: 0; border: 0;"></code></pre>
+    <button class="runButton" style="position: absolute; right: 0;">Run</button>
+    <canvas class="pygameCanvas" width="800" height="600" style="width: 100%; border: 1px solid black;"></canvas>
+</div>

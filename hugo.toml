@@ -1,0 +1,26 @@
+baseURL = 'https://coderdojobrighton.github.io/moving-on-from-scratch'
+title = 'Moving on from Scratch'
+theme = "hugo-book"
+
+[markup]
+[markup.goldmark.renderer]
+    unsafe = false
+
+[security]
+[security.http]
+    mediaTypes = ['^application/wasm$', '^application/zip$', '^application/octet-stream$']
+
+[menu]
+[[menu.after]]
+    name = "Browse Code"
+    url = "https://github.com/CoderDojoBrighton/moving-on-from-scratch"
+    weight = 10
+
+# See details at https://github.com/alex-shpak/hugo-book
+[params]
+    BookTheme = 'light'
+    BookToC = true
+    BookSearch = false
+    BookComments = false
+    BookLogo = "favicon.png"
+    BookSection = 'docs'

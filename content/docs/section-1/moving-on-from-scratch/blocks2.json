@@ -1,0 +1,86 @@
+{
+  "sprites": [
+    {
+      "name": "ball",
+      "image": "ball.png",
+      "workspace": {
+        "blocks": {
+          "languageVersion": 0,
+          "blocks": [
+            {
+              "type": "on_start",
+              "id": "l@o5,s?PB8r;s3ztYd!}",
+              "x": 4,
+              "y": 32,
+              "next": {
+                "block": {
+                  "type": "set_x_to",
+                  "id": "EDibH(X7GEmpF,68H+/$",
+                  "inputs": {
+                    "value": {
+                      "shadow": {
+                        "type": "math_number",
+                        "id": "Wq$@*`enKh-n}ID=LOnY",
+                        "fields": {
+                          "NUM": 400
+                        }
+                      }
+                    }
+                  },
+                  "next": {
+                    "block": {
+                      "type": "set_y_to",
+                      "id": "s.W@WF:ah~@yxXAvJy?*",
+                      "inputs": {
+                        "value": {
+                          "shadow": {
+                            "type": "math_number",
+                            "id": "j:sn1}P@cAVK@z0JEdU:",
+                            "fields": {
+                              "NUM": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "type": "on_start",
+              "id": "U/@-Zun_`FX[4F5.m+Z=",
+              "x": 0,
+              "y": 200,
+              "next": {
+                "block": {
+                  "type": "loop_forever",
+                  "id": "h4Ylj56?r,l=9y|W=9eD",
+                  "inputs": {
+                    "DO": {
+                      "block": {
+                        "type": "change_y_by",
+                        "id": "0CsQ;{l*=MLWM@dK#]Q,",
+                        "inputs": {
+                          "value": {
+                            "shadow": {
+                              "type": "math_number",
+                              "id": "eos{v=;xDBJt%*fb^5tP",
+                              "fields": {
+                                "NUM": 10
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

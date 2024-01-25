@@ -1,0 +1,77 @@
+{{ if .HasShortcode "blockly" }}
+
+<!-- Load Blockly core -->
+{{- with resources.Get "blockly/blockly_compressed.js" }}
+<script type="text/javascript" src="{{ .RelPermalink }}"></script>
+{{- end -}}
+<!-- Load the default blocks -->
+{{- with resources.Get "blockly/blocks_compressed.js" }}
+<script type="text/javascript" src="{{ .RelPermalink }}"></script>
+{{- end -}}
+<!-- Load a generator -->
+{{- with resources.Get "blockly/python_compressed.js" }}
+<script type="text/javascript" src="{{ .RelPermalink }}"></script>
+{{- end -}}
+<!-- Load a message file -->
+{{- with resources.Get "blockly/msg/en-gb.js" }}
+<script type="text/javascript" src="{{ .RelPermalink }}"></script>
+{{- end -}}
+
+<!-- Make Hugo aware of the blockly resources -->
+{{ range resources.Match "blockly/media/*" }}
+{{ .Publish }}
+{{ end  }}
+
+<!-- Make Hugo aware of the highlight.js resources -->
+{{- with resources.Get "highlightjs/default.min.css" }}
+<link rel="stylesheet" href="{{ .RelPermalink }}" />
+{{- end -}}
+{{- with resources.Get "highlightjs/highlight.min.js" }}
+<script type="text/javascript" src="{{ .RelPermalink }}"></script>
+{{- end -}}
+
+<!-- Fetch pyodide resources -->
+{{ $pyodide_cdn := "https://cdn.jsdelivr.net/pyodide/v0.27.6/full/" }}
+{{ $pyodide_resources := (slice "pyodide.asm.wasm" "pyodide.asm.js"
+                                "pyodide-lock.json"
+                                "python_stdlib.zip"
+                                "numpy-2.0.2-cp312-cp312-pyodide_2024_0_wasm32.whl"
+                                "pygame_ce-2.4.1-cp312-cp312-pyodide_2024_0_wasm32.whl")
+}}
+{{ range $pyodide_resource := $pyodide_resources }}
+{{ with (resources.GetRemote (urls.JoinPath $pyodide_cdn $pyodide_resource)) }}
+{{ with resources.Copy (path.Join "pyodide/" $pyodide_resource) . }}
+{{ .Publish }}
+{{ end }}
+{{ end }}
+{{ end }}
+
+{{ with (resources.GetRemote "https://files.pythonhosted.org/packages/2c/66/bc46c203802d47fa30a6caa92d13392274bcbebbb9ffcd0c5ed8030b3611/pgzero-1.2.1-py3-none-any.whl") }}
+{{ with resources.Copy "pyodide/pgzero-1.2.1-py3-none-any.whl" . }}
+{{ .Publish }}
+{{ end }}
+{{ end }}
+
+{{- with resources.GetRemote (urls.JoinPath $pyodide_cdn "pyodide.js") }}
+{{- with resources.Copy "pyodide/pyodide.js" . }}
+<script type="text/javascript" src="{{ .RelPermalink }}"></script>
+{{- end -}}
+{{- end -}}
+
+{{ range resources.Match "pyodide/*" }}
+{{ .Publish }}
+{{ end  }}
+{{- with resources.Get "pyodide/pyodide.js" }}
+<script type="text/javascript" src="{{ .RelPermalink }}"></script>
+{{- end -}}
+
+<!-- Load PyGame runner -->
+{{- with resources.Get "pygame_runner.js" }}
+<script type="text/javascript" src="{{ .RelPermalink }}"></script>
+{{- end -}}
+<!-- Load examples script -->
+{{- with resources.Get "blockly_example.js" }}
+<script type="text/javascript" src="{{ .RelPermalink }}"></script>
+{{- end -}}
+
+{{ end }}
