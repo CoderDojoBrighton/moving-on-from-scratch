@@ -10,5 +10,6 @@ Example 1:
 Example 2:
 {{< blockly readonly=true sample=blocks2.json >}}
 
+Example 3 (multiple sprites):
 This one's got the editor enabled, though normally that wouldn't be exposed to users.
-{{< blockly sample=blocks.json >}}
+{{< blockly sample=blocks3.json >}}

@@ -16,23 +16,14 @@ function getKeyOptions() {
     return keyOptions;
 }
 
-let pyodide = null;
-let currentRunGlobals = null;
-let currentRunPromise = null;
-async function waitForPyodide() {
-    if (pyodide !== null) {
-        return pyodide;
-    } else {
-        pyodide = await loadPyodide({packages: ['pygame-ce', 'numpy', 'pgzero']});
-        return pyodide;
-    }
-}
-
-document.addEventListener("DOMContentLoaded", async function() {
+document.addEventListener("DOMContentLoaded", async function () {
     Blockly.Msg.HEADER_COLOUR = "#FFBF00";
+    Blockly.Msg.EVENTS_COLOUR = "#FFBF00";
     Blockly.Msg.MOTION_COLOUR = "#4C97FF";
+    Blockly.Msg.SENSING_COLOUR = "#5CB1D6";
     Blockly.Msg.CONTROL_COLOUR = "#FFAB19";
     Blockly.Msg.MATHS_COLOUR = "#59C059";
+    Blockly.Msg.VARIABLES_COLOUR = "#FF8C1A";
 
     Blockly.common.defineBlocksWithJsonArray([
         {
@@ -154,7 +145,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                     }
                 ],
                 "output": "Boolean",
-                "colour": 60
+                "colour": "%{BKY_SENSING_COLOUR}"
             });
         }
     };
@@ -224,7 +215,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         const runButton = blocklyContainer.getElementsByClassName("runButton")[0];
 
         let clickEventHandlerInstanceCount = 0;
-        runButton.addEventListener("click", async function() {
+        runButton.addEventListener("click", async function () {
             if (clickEventHandlerInstanceCount > 1) {
                 // Allow for one running instance and one prepared to take over but no more than that.
                 console.warn("There are already", clickEventHandlerInstanceCount, "instances running!");
@@ -253,75 +244,240 @@ document.addEventListener("DOMContentLoaded", async function() {
             theme: theme,
             renderer: 'zelos',
             toolbox: blocklyElement.dataset.readonly === 'true' ? undefined : {
-                kind: 'flyoutToolbox',
                 contents: [
                     {
-                        kind: 'block',
-                        type: 'controls_if'
-                    },
-                    {
-                        kind: 'block',
-                        type: 'loop_forever'
-                    },
-                    {
-                        kind: 'block',
-                        type: 'on_key_pressed'
-                    },
-                    {
-                        kind: 'block',
-                        type: 'on_start'
-                    },
-                    {
-                        kind: 'block',
-                        type: 'touched_condition'
-                    },
-                    {
-                        kind: 'block',
-                        type: 'change_x_by',
-                        inputs: {
-                            value: {
-                                shadow: {
-                                    type: 'math_number',
-                                    fields: {NUM: 0}
+                        kind: 'CATEGORY',
+                        name: 'Motion',
+                        colour: '%{BKY_MOTION_COLOUR}',
+                        contents: [
+                            {
+                                kind: 'block',
+                                type: 'change_x_by',
+                                inputs: {
+                                    value: {
+                                        shadow: {
+                                            type: 'math_number',
+                                            fields: {NUM: 0}
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                kind: 'block',
+                                type: 'set_x_to',
+                                inputs: {
+                                    value: {
+                                        shadow: {
+                                            type: 'math_number',
+                                            fields: {NUM: 0}
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                kind: 'block',
+                                type: 'change_y_by',
+                                inputs: {
+                                    value: {
+                                        shadow: {
+                                            type: 'math_number',
+                                            fields: {NUM: 0}
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                kind: 'block',
+                                type: 'set_y_to',
+                                inputs: {
+                                    value: {
+                                        shadow: {
+                                            type: 'math_number',
+                                            fields: {NUM: 0}
+                                        }
+                                    }
                                 }
                             }
-                        }
+                        ]
+                    },
+/*
+                    {
+                        kind: 'CATEGORY',
+                        name: 'Looks',
+                        colour: '%{BKY_LOGIC_HUE}',
+                        contents: []
                     },
                     {
-                        kind: 'block',
-                        type: 'set_x_to',
-                        inputs: {
-                            value: {
-                                shadow: {
-                                    type: 'math_number',
-                                    fields: {NUM: 0}
-                                }
+                        kind: 'CATEGORY',
+                        name: 'Sound',
+                        colour: '%{BKY_LOGIC_HUE}',
+                        contents: []
+                    },
+ */
+                    {
+                        kind: 'CATEGORY',
+                        name: 'Events',
+                        colour: '%{BKY_EVENTS_COLOUR}',
+                        contents: [
+                            {
+                                kind: 'block',
+                                type: 'on_key_pressed'
+                            },
+                            {
+                                kind: 'block',
+                                type: 'on_start'
                             }
-                        }
+                        ]
                     },
                     {
-                        kind: 'block',
-                        type: 'change_y_by',
-                        inputs: {
-                            value: {
-                                shadow: {
-                                    type: 'math_number',
-                                    fields: {NUM: 0}
-                                }
+                        kind: 'CATEGORY',
+                        name: 'Control',
+                        colour: '%{BKY_CONTROL_COLOUR}',
+                        contents: [
+                            {
+                                kind: 'block',
+                                type: 'loop_forever'
+                            },
+                            {
+                                kind: 'BLOCK',
+                                type: 'controls_repeat_ext',
+                                inputs: {
+                                    TIMES: {
+                                        shadow: {
+                                            type: 'math_number',
+                                            fields: {NUM: 10},
+                                        },
+                                    },
+                                },
+                            },
+                            {
+                                kind: 'BLOCK',
+                                type: 'controls_if',
                             }
-                        }
+                        ]
                     },
                     {
-                        kind: 'block',
-                        type: 'set_y_to',
-                        inputs: {
-                            value: {
-                                shadow: {
-                                    type: 'math_number',
-                                    fields: {NUM: 0}
-                                }
+                        kind: 'CATEGORY',
+                        name: 'Sensing',
+                        colour: '%{BKY_SENSING_COLOUR}',
+                        contents: [
+                            {
+                                kind: 'block',
+                                type: 'touched_condition'
                             }
-                        }
+                        ]
+                    },
+                    {
+                        kind: 'CATEGORY',
+                        name: 'Operators',
+                        colour: '%{BKY_MATHS_COLOUR}',
+                        contents: [
+                            {
+                                kind: 'BLOCK',
+                                type: 'math_number',
+                                fields: {NUM: 123},
+                            },
+                            {
+                                kind: 'BLOCK',
+                                type: 'math_arithmetic',
+                                inputs: {
+                                    A: {
+                                        shadow: {
+                                            type: 'math_number',
+                                            fields: {NUM: 1},
+                                        },
+                                    },
+                                    B: {
+                                        shadow: {
+                                            type: 'math_number',
+                                            fields: {NUM: 1},
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                kind: 'BLOCK',
+                                type: 'math_number_property',
+                                inputs: {
+                                    NUMBER_TO_CHECK: {
+                                        shadow: {
+                                            type: 'math_number',
+                                            fields: {NUM: 0},
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                kind: 'BLOCK',
+                                type: 'math_round',
+                                inputs: {
+                                    NUM: {
+                                        shadow: {
+                                            type: 'math_number',
+                                            fields: {NUM: 3.1},
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                kind: 'BLOCK',
+                                type: 'math_modulo',
+                                inputs: {
+                                    DIVIDEND: {
+                                        shadow: {
+                                            type: 'math_number',
+                                            fields: {NUM: 64},
+                                        },
+                                    },
+                                    DIVISOR: {
+                                        shadow: {
+                                            type: 'math_number',
+                                            fields: {NUM: 10},
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                kind: 'BLOCK',
+                                type: 'math_random_int',
+                                inputs: {
+                                    FROM: {
+                                        shadow: {
+                                            type: 'math_number',
+                                            fields: {NUM: 1},
+                                        },
+                                    },
+                                    TO: {
+                                        shadow: {
+                                            type: 'math_number',
+                                            fields: {NUM: 100},
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                kind: 'BLOCK',
+                                type: 'logic_compare',
+                            },
+                            {
+                                kind: 'BLOCK',
+                                type: 'logic_operation',
+                            },
+                            {
+                                kind: 'BLOCK',
+                                type: 'logic_negate',
+                            },
+                            {
+                                kind: 'BLOCK',
+                                type: 'logic_boolean',
+                            }
+                        ]
+                    },
+                    {
+                        kind: 'CATEGORY',
+                        name: 'Variables',
+                        custom: 'VARIABLE',
+                        colour: '%{BKY_VARIABLES_COLOUR}',
                     }
                 ]
             },
@@ -389,6 +545,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                             if (sprite.workspace !== undefined) {
                                 spriteWorkspaces[sprite.name] = sprite.workspace;
                             } else {
+                                console.warn("Missing workspace for sprite: \"" + sprite.name + "\"");
                                 spriteWorkspaces[sprite.name] = {
                                     blocks: {
                                         languageVersion: 0,
@@ -413,37 +570,53 @@ document.addEventListener("DOMContentLoaded", async function() {
             Blockly.Events.BLOCK_MOVE,
         ]);
 
+        let headlessCodeGenWorkspace = new Blockly.Workspace();
+        headlessCodeGenWorkspace.currentSprite = workspace.currentSprite;
+        headlessCodeGenWorkspace.spriteNames = workspace.spriteNames;
+
         function generateCode() {
             let global_blocks = [];
             let update_handlers = [];
             let key_pressed_handlers = {};
 
-            python.pythonGenerator.init(workspace);
-            for (const block of workspace.getTopBlocks(true)) {
-                switch (block.type) {
-                    case 'on_start': {
-                        const nextBlock = block.getNextBlock();
-                        if (nextBlock !== null) {
-                            if (nextBlock.type === "loop_forever") {
-                                const targetBlock = nextBlock.getInputTargetBlock("DO");
-                                if (targetBlock !== null) {
-                                    update_handlers.push(python.pythonGenerator.blockToCode(targetBlock));
+            python.pythonGenerator.init(headlessCodeGenWorkspace);
+
+            headlessCodeGenWorkspace.spriteNames = workspace.spriteNames;
+            for (const sprite of workspace.spriteNames) {
+                let blocks;
+                if (sprite === workspace.currentSprite) {
+                    blocks = workspace.getTopBlocks(true);
+                } else {
+                    headlessCodeGenWorkspace.currentSprite = sprite;
+                    Blockly.serialization.workspaces.load(spriteWorkspaces[sprite], headlessCodeGenWorkspace);
+                    blocks = headlessCodeGenWorkspace.getTopBlocks(true);
+                }
+                for (const block of blocks) {
+                    switch (block.type) {
+                        case 'on_start': {
+                            const nextBlock = block.getNextBlock();
+                            if (nextBlock !== null) {
+                                if (nextBlock.type === "loop_forever") {
+                                    const targetBlock = nextBlock.getInputTargetBlock("DO");
+                                    if (targetBlock !== null) {
+                                        update_handlers.push(python.pythonGenerator.blockToCode(targetBlock));
+                                    }
+                                } else {
+                                    global_blocks.push(python.pythonGenerator.blockToCode(nextBlock));
                                 }
-                            } else {
-                                global_blocks.push(python.pythonGenerator.blockToCode(nextBlock));
                             }
+                            break;
                         }
-                        break;
-                    }
-                    case 'on_key_pressed': {
-                        const nextBlock = block.getNextBlock();
-                        if (nextBlock !== null) {
-                            key_pressed_handlers[block.getFieldValue("key")] = python.pythonGenerator.blockToCode(nextBlock);
+                        case 'on_key_pressed': {
+                            const nextBlock = block.getNextBlock();
+                            if (nextBlock !== null) {
+                                key_pressed_handlers[block.getFieldValue("key")] = python.pythonGenerator.blockToCode(nextBlock);
+                            }
+                            break;
                         }
-                        break;
-                    }
-                    default: {
-                        global_blocks.push(python.pythonGenerator.blockToCode(block));
+                        default: {
+                            global_blocks.push(python.pythonGenerator.blockToCode(block));
+                        }
                     }
                 }
             }

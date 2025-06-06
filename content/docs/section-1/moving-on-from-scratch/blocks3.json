@@ -1,0 +1,249 @@
+{
+  "sprites": [
+    {
+      "name": "ball",
+      "image": "ball.png",
+      "workspace": {
+        "blocks": {
+          "languageVersion": 0,
+          "blocks": [
+            {
+              "type": "on_start",
+              "id": "l@o5,s?PB8r;s3ztYd!}",
+              "x": 28,
+              "y": 73,
+              "deletable": false,
+              "next": {
+                "block": {
+                  "type": "set_x_to",
+                  "id": "EDibH(X7GEmpF,68H+/$",
+                  "deletable": false,
+                  "inputs": {
+                    "value": {
+                      "shadow": {
+                        "type": "math_number",
+                        "id": "Wq$@*`enKh-n}ID=LOnY",
+                        "deletable": false,
+                        "fields": {
+                          "NUM": 400
+                        }
+                      }
+                    }
+                  },
+                  "next": {
+                    "block": {
+                      "type": "set_y_to",
+                      "id": "s.W@WF:ah~@yxXAvJy?*",
+                      "deletable": false,
+                      "inputs": {
+                        "value": {
+                          "shadow": {
+                            "type": "math_number",
+                            "id": "j:sn1}P@cAVK@z0JEdU:",
+                            "deletable": false,
+                            "fields": {
+                              "NUM": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "type": "on_start",
+              "id": "U/@-Zun_`FX[4F5.m+Z=",
+              "x": 215,
+              "y": 8,
+              "deletable": false,
+              "next": {
+                "block": {
+                  "type": "loop_forever",
+                  "id": "h4Ylj56?r,l=9y|W=9eD",
+                  "deletable": false,
+                  "inputs": {
+                    "DO": {
+                      "block": {
+                        "type": "change_y_by",
+                        "id": "0CsQ;{l*=MLWM@dK#]Q,",
+                        "deletable": false,
+                        "inputs": {
+                          "value": {
+                            "shadow": {
+                              "type": "math_number",
+                              "id": "eos{v=;xDBJt%*fb^5tP",
+                              "deletable": false,
+                              "fields": {
+                                "NUM": 10
+                              }
+                            }
+                          }
+                        },
+                        "next": {
+                          "block": {
+                            "type": "controls_if",
+                            "id": "Y5t*j@s!O@wkrc^!I|^y",
+                            "inputs": {
+                              "IF0": {
+                                "block": {
+                                  "type": "touched_condition",
+                                  "id": "@{mRB45?D^+=k8O.EhL3",
+                                  "fields": {
+                                    "sprite": "paddle"
+                                  }
+                                }
+                              },
+                              "DO0": {
+                                "block": {
+                                  "type": "set_x_to",
+                                  "id": "cGp_pB.dh5/c*O^_Yi=:",
+                                  "inputs": {
+                                    "value": {
+                                      "shadow": {
+                                        "type": "math_number",
+                                        "id": "g!6Co6|{Gqk-wQV]bHWz",
+                                        "fields": {
+                                          "NUM": 400
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "next": {
+                                    "block": {
+                                      "type": "set_y_to",
+                                      "id": "mysYe.VR2S]/Zd3i[E01",
+                                      "inputs": {
+                                        "value": {
+                                          "shadow": {
+                                            "type": "math_number",
+                                            "id": "+K3~uZj30U,-5_d(894R",
+                                            "fields": {
+                                              "NUM": 0
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "paddle",
+      "image": "paddle.png",
+      "workspace": {
+        "blocks": {
+          "languageVersion": 0,
+          "blocks": [
+            {
+              "type": "on_key_pressed",
+              "id": "mlT9%rtES[F*M=jZziAr",
+              "x": 81,
+              "y": 28,
+              "fields": {
+                "key": "keys.LEFT"
+              },
+              "next": {
+                "block": {
+                  "type": "change_x_by",
+                  "id": "BQT/!%),]_~Z~2pdxZ9;",
+                  "inputs": {
+                    "value": {
+                      "shadow": {
+                        "type": "math_number",
+                        "id": "b7@{`wAo.qcb0}@aOZA,",
+                        "fields": {
+                          "NUM": -10
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "type": "on_key_pressed",
+              "id": "D`uoLodCaZSB2z6$6Pip",
+              "x": 70,
+              "y": 156,
+              "fields": {
+                "key": "keys.RIGHT"
+              },
+              "next": {
+                "block": {
+                  "type": "change_x_by",
+                  "id": "gHqMpzP+uijyu(?FYEZ)",
+                  "inputs": {
+                    "value": {
+                      "shadow": {
+                        "type": "math_number",
+                        "id": "P~*=F0m/rxp`^2dN+b#=",
+                        "fields": {
+                          "NUM": 10
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "type": "on_start",
+              "id": "O.H40F/Y5kehPM-/U^$!",
+              "x": 377,
+              "y": 31,
+              "next": {
+                "block": {
+                  "type": "set_x_to",
+                  "id": "cGp_pB.dh5/c*O^_Yi=:",
+                  "inputs": {
+                    "value": {
+                      "shadow": {
+                        "type": "math_number",
+                        "id": "g!6Co6|{Gqk-wQV]bHWz",
+                        "fields": {
+                          "NUM": 400
+                        }
+                      }
+                    }
+                  },
+                  "next": {
+                    "block": {
+                      "type": "set_y_to",
+                      "id": "mysYe.VR2S]/Zd3i[E01",
+                      "inputs": {
+                        "value": {
+                          "shadow": {
+                            "type": "math_number",
+                            "id": "+K3~uZj30U,-5_d(894R",
+                            "fields": {
+                              "NUM": 540
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
