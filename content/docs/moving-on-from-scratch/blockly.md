@@ -1,8 +1,10 @@
 ---
 weight: 1
 bookFlatSection: false
-title: "Blockly"
+title: "Small Example Programs"
 ---
+
+# Examples
 
 Example 1:
 {{< blockly readonly=true sample=blocks.json >}}
