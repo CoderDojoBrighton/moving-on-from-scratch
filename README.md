@@ -1,4 +1,4 @@
-# Docs Template
+# Moving on From Scratch
 
 ## Running Docs Site Locally
 
